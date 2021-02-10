@@ -43,7 +43,7 @@ export default {
                 cube.rotation.x += Math.random() * 0.2 + -0.1
                 cube.rotation.y += Math.random() * 0.2 + -0.1
                 cube.rotation.z += Math.random() * 0.2 + -0.1
-            });
+            })
 
             renderer.render(scene, camera)
         }

@@ -14,8 +14,8 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "07:37:4f:f9:1c:ac:16:f0:2e:bb:df:7e:3d:b7:6a:cd"
-      - run: 
+            - "e8:91:89:20:2f:03:d5:98:64:76:5b:2c:f8:16:44:ef"
+      - run:
           name: Prepare and install enviroment's package stuff
           command: yarn install
       - run:
