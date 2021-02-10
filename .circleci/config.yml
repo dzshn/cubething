@@ -1,0 +1,34 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.0
+workflows:
+  build-and-deploy:
+    jobs:
+      - main
+
+jobs:
+  main:
+    docker:
+      - image: 'cimg/node:current'
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "07:37:4f:f9:1c:ac:16:f0:2e:bb:df:7e:3d:b7:6a:cd"
+      - run: 
+          name: Prepare and install enviroment's package stuff
+          command: yarn install
+      - run:
+          name: Build webapp
+          command: yarn build
+      - run:
+          name: Install gh-pages
+          command: sudo npm install -g --silent gh-pages
+      - run:
+            name: Configurate git
+            command: |
+              git config --global user.email "zshn@pm.me"
+              git config --global user.name "cibuild"
+      - run:
+          name: Deploy to github pages
+          command: gh-pages --dotfiles --message "[skip ci] Build docs" --dist dist
