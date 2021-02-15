@@ -11,9 +11,11 @@
                 <button @click="addCube">Add cube</button> /
                 <button @click="removeCube">Eat cube</button>
             </div>
+            <div>
+                <button @click="nuke">nuke</button>
+            </div>
         </div>
-        <p>{{scene? scene.children.length : 'no'}}</p>
-        <h3>bottom text</h3>
+        <p>{{cubeCount}} cube{{cubeCount == 1? '' : 's'}} stroking</p>
     </div>
 </template>
 
@@ -41,12 +43,14 @@ export default {
                     title: "Scaling: ",
                     value: 1
                 }
-            }
+            },
+            cubeCount: 1
         }
     },
     methods: {
         addCube() {
             this.scene.add(new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshNormalMaterial()))
+            this.cubeCount++
         },
         removeCube() {
             if (this.scene.children.length == 0) { return }
@@ -54,6 +58,16 @@ export default {
             this.scene.remove(cube)
             cube.material.dispose()
             cube.geometry.dispose()
+            this.cubeCount--
+        },
+        nuke() {
+            while (this.scene.children.length > 0) {
+                let cube = this.scene.children[0]
+                this.scene.remove(cube)
+                cube.material.dispose()
+                cube.geometry.dispose()
+            }
+            this.cubeCount = 0
         }
     },
     mounted() {
@@ -105,10 +119,30 @@ export default {
 
 #controls {
     display: grid;
-    grid-auto-flow: column dense;
     width: fit-content;
     margin: auto;
     gap: 5px;
+}
+
+@media only screen and (min-width: 400px) {
+    #controls {
+        grid-template: 'a a';
+    }
+    #controls div {
+        min-width: 180px;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    #controls {
+        grid-template: 'a a a a';
+    }
+    #controls div {
+        min-width: 260px;
+    }
+    #controls div:nth-last-of-type(2) {
+        grid-column: 2;
+    }
 }
 
 #controls div {
@@ -116,6 +150,7 @@ export default {
     border-radius: 10px;
     padding: 4px;
     width: fit-content;
+    margin: auto;
 }
 
 #controls label {
